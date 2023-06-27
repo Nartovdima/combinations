@@ -48,7 +48,7 @@ void Combinations::set_expiration(pugi::xml_node& leg_xml, Leg& leg) {
     }
 
     const auto& expiration_offset = leg_xml.attribute("expiration_offset");
-    if (expiration_offset && expiration_offset.value()[0] == '+' || expiration_offset.value()[0] == '-') {
+    if (expiration_offset && (expiration_offset.value()[0] == '+' || expiration_offset.value()[0] == '-')) {
         int len        = static_cast<int>(std::strlen(expiration_offset.value()));
         leg.expiration = ((expiration_offset.value()[0]) == '+' ? len : -len);
         return;
@@ -124,7 +124,7 @@ bool Combinations::load(const std::filesystem::path& resource) {
 
 bool MultipleCombination::acceptable_combination(const std::vector<Component>& components,
                                                  std::vector<int>& order) const {
-    if (!acceptable_type(components, order)) {
+    if (!acceptable_type(components)) {
         return false;
     }
 
@@ -138,8 +138,7 @@ bool MultipleCombination::acceptable_combination(const std::vector<Component>& c
     return false;
 }
 
-bool MultipleCombination::acceptable_type(const std::vector<Component>& components,
-                                          const std::vector<int>& order) const {
+bool MultipleCombination::acceptable_type(const std::vector<Component>& components) const {
     if (components.empty() || components.size() % legs.size()) {
         return false;
     }
@@ -180,7 +179,7 @@ bool MultipleCombination::check_strike(const std::variant<char, int>& leg_strike
         last_signs_amount = 0;
     } else if (std::holds_alternative<int>(leg_strike)) {
         const auto& strike_offset = std::get<int>(leg_strike);
-        if (strike_offset != 0 && strike_offset == last_signs_amount) {
+        if (strike_offset != 0 && strike_offset == static_cast<int>(last_signs_amount)) {
             if (test_strike != last_strike) {
                 return false;
             }
@@ -215,7 +214,7 @@ bool MultipleCombination::check_expiration(const std::variant<char, int, Expirat
         last_signs_amount = 0;
     } else if (std::holds_alternative<int>(leg_expiration)) {
         const auto& expiration_offset = std::get<int>(leg_expiration);
-        if (expiration_offset != 0 && expiration_offset == last_signs_amount) {
+        if (expiration_offset != 0 && expiration_offset == static_cast<int>(last_signs_amount)) {
             if (test_expiration != last_expiration) {
                 return false;
             }
@@ -279,11 +278,11 @@ bool MultipleCombination::acceptable_legs(const std::vector<Component>& componen
     return true;
 }
 
-bool FixedCombination::acceptable_type(const std::vector<Component>& components, const std::vector<int>& order) const {
+bool FixedCombination::acceptable_type(const std::vector<Component>& components) const {
     return components.size() == legs.size();
 }
 
-bool MoreCombination::acceptable_type(const std::vector<Component>& components, const std::vector<int>& order) const {
+bool MoreCombination::acceptable_type(const std::vector<Component>& components) const {
     return components.size() >= min_count;
 }
 
@@ -311,7 +310,7 @@ bool MoreCombination::acceptable_legs(const std::vector<Component>& components, 
 
 bool MoreCombination::acceptable_combination(const std::vector<Component>& components, std::vector<int>& order) const {
     std::iota(order.begin(), order.end(), 0);
-    return acceptable_type(components, order) && acceptable_legs(components, order);
+    return acceptable_type(components) && acceptable_legs(components, order);
 }
 
 std::string Combinations::classify(const std::vector<Component>& components, std::vector<int>& order) const {

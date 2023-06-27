@@ -3,7 +3,7 @@
 ExpirationOffset::ExpirationOffset(std::size_t number_of_periods, TimePeriods period)
     : number_of_periods(number_of_periods), period(period) {}
 
-ExpirationOffset::ExpirationOffset(TimePeriods period) : period(period), number_of_periods(1) {}
+ExpirationOffset::ExpirationOffset(TimePeriods period) : number_of_periods(1), period(period) {}
 
 std::size_t ExpirationOffset::num() const {
     return number_of_periods;
@@ -83,7 +83,7 @@ bool operator!=(const Date& left, const Date& right) {
 }
 
 bool operator<(const Date& left, const Date& right) {
-    if (left.date.tm_year == left.date.tm_year) {
+    if (left.date.tm_year == right.date.tm_year) {
         if (left.date.tm_mon == right.date.tm_mon) {
             return left.date.tm_mday < right.date.tm_mday;
         }

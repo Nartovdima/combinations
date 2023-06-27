@@ -24,8 +24,8 @@ struct Leg {
     std::variant<char, int> strike;
     std::variant<char, int, ExpirationOffset> expiration;
 
-    static const char invalid_strike     = '\u0000';
-    static const char invalid_expiration = '\u0000';
+    static constexpr char invalid_strike     = '\u0000';
+    static constexpr char invalid_expiration = '\u0000';
 };
 
 class Combinations {
@@ -54,11 +54,12 @@ public:
 
     virtual bool acceptable_combination(const std::vector<Component>& components, std::vector<int>& order) const = 0;
 
+    virtual ~Combination() = default;
 protected:
     std::string name;
     const std::vector<Leg> legs;
 
-    virtual bool acceptable_type(const std::vector<Component>& components, const std::vector<int>& order) const = 0;
+    virtual bool acceptable_type(const std::vector<Component>& components) const = 0;
     virtual bool acceptable_legs(const std::vector<Component>& components, const std::vector<int>& order) const = 0;
 };
 
@@ -76,9 +77,8 @@ protected:
                           std::unordered_map<char, Date>& expirations, Date& last_expiration,
                           std::size_t& last_signs_amount, const Date& test_expiration) const;
 
-    virtual bool acceptable_type(const std::vector<Component>& components,
-                                 const std::vector<int>& order) const override;
-    bool acceptable_legs(const std::vector<Component>& components, const std::vector<int>& order) const;
+    virtual bool acceptable_type(const std::vector<Component>& components) const override;
+    bool acceptable_legs(const std::vector<Component>& components, const std::vector<int>& order) const override;
 };
 
 class FixedCombination: public MultipleCombination {
@@ -86,7 +86,7 @@ public:
     FixedCombination(std::string&& name, std::vector<Leg>&& legs);
 
 private:
-    bool acceptable_type(const std::vector<Component>& components, const std::vector<int>& order) const override;
+    bool acceptable_type(const std::vector<Component>& components) const override;
 };
 
 class MoreCombination: public Combination {
@@ -98,8 +98,8 @@ public:
 protected:
     std::size_t min_count;
 
-    bool acceptable_type(const std::vector<Component>& components, const std::vector<int>& order) const;
-    bool acceptable_legs(const std::vector<Component>& components, const std::vector<int>& order) const;
+    bool acceptable_type(const std::vector<Component>& components) const override;
+    bool acceptable_legs(const std::vector<Component>& components, const std::vector<int>& order) const override;
 };
 
 #endif  // COMBINATIONS_COMBINATIONS_HPP
