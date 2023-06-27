@@ -5,6 +5,8 @@
 #include <istream>
 #include <string>
 
+#include "DateWrap.hpp"
+
 enum class InstrumentType : char { C = 'C', F = 'F', O = 'O', P = 'P', U = 'U', Unknown = '\0' };
 
 struct Component {
@@ -14,7 +16,7 @@ struct Component {
     InstrumentType type{InstrumentType::Unknown};
     double ratio{0};
     double strike{0};
-    std::tm expiration;
+    Date expiration;
 };
 
 #endif  // COMBINATIONS_COMPONENT_HPP

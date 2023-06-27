@@ -1,19 +1,24 @@
 project(combinations)
 
-add_library(${PROJECT_NAME}
+find_package(pugixml REQUIRED)
+
+add_library(${PROJECT_NAME} STATIC
     include/combinations/Combinations.hpp src/Combinations.cpp
     include/combinations/Component.hpp src/Component.cpp
+    include/combinations/DateWrap.hpp src/DateWrap.cpp
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC include)
 
 add_library(combinations::combinations ALIAS ${PROJECT_NAME})
+find_package(pugixml REQUIRED)
+target_link_libraries(${PROJECT_NAME} PUBLIC pugixml::pugixml)
 
 enable_testing()
 find_package(GTest REQUIRED)
 include(GoogleTest)
 
-add_executable(tests tests/load_test.cpp tests/test.cpp)
+add_executable(tests tests/test.cpp tests/load_test.cpp)
 target_link_libraries(tests PRIVATE GTest::GTest combinations::combinations)
 gtest_discover_tests(tests)
 

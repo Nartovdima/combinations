@@ -47,6 +47,7 @@ endif()
 include(${CMAKE_BINARY_DIR}/conan.cmake)
 
 conan_cmake_configure(
+    REQUIRES pugixml/1.13
     REQUIRES gtest/1.13.0
     GENERATORS cmake_find_package
 )

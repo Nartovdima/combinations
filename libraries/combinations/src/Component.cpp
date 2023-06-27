@@ -43,11 +43,13 @@ Component Component::from_stream(std::istream& strm) {
         }
     }
 
-    strm >> std::get_time(&component.expiration, "%Y-%m-%d");
+    std::tm tmp;
+    strm >> std::get_time(&tmp, "%Y-%m-%d");
     if (strm.fail()) {
         return {};
     }
 
+    component.expiration = Date(tmp);
     return component;
 }
 
