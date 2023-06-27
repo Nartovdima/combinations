@@ -2,6 +2,7 @@
 #define COMBINATIONS_COMBINATIONS_HPP
 
 #include <algorithm>
+#include <cstring>
 #include <filesystem>
 #include <memory>
 #include <numeric>
