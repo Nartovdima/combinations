@@ -1964,7 +1964,7 @@ TEST_F(CombinationsTest, Straddle_strip_jumps_leap_direct) {
         Component::from_string("P 1 2000 2000-01-31"),  // 1m
         Component::from_string("C 1 2000 2000-03-02"),  // 2m
         Component::from_string("P 1 2000 2000-02-29"),  // 60d
-        Component::from_string("C 1 2000 2000-10-01"),  // 3q
+        Component::from_string("C 1 2000 2000-09-01"),  // 3q
         Component::from_string("P 1 2000 2002-12-31"),  // 3y
     };
     std::vector<int> order;
@@ -1975,7 +1975,7 @@ TEST_F(CombinationsTest, Straddle_strip_jumps_leap_direct) {
 
 TEST_F(CombinationsTest, Straddle_strip_jumps_leap_reverse) {
     const std::vector<Component> components = {
-        Component::from_string("P 1 2000 2002-12-31"), Component::from_string("C 1 2000 2000-10-01"),
+        Component::from_string("P 1 2000 2002-12-31"), Component::from_string("C 1 2000 2000-09-01"),
         Component::from_string("P 1 2000 2000-02-29"), Component::from_string("C 1 2000 2000-03-02"),
         Component::from_string("P 1 2000 2000-01-31"), Component::from_string("C 1 2000 2000-01-02"),
         Component::from_string("P 1 2000 1999-12-31"), Component::from_string("C 1 2000 1999-12-31"),
@@ -1989,7 +1989,7 @@ TEST_F(CombinationsTest, Straddle_strip_jumps_leap_reverse) {
 TEST_F(CombinationsTest, Straddle_strip_jumps_leap_shuffle) {
     const std::vector<Component> components = {
         Component::from_string("P 1 2000 2000-02-29"), Component::from_string("C 1 2000 2000-01-02"),
-        Component::from_string("P 1 2000 2000-01-31"), Component::from_string("C 1 2000 2000-10-01"),
+        Component::from_string("P 1 2000 2000-01-31"), Component::from_string("C 1 2000 2000-09-01"),
         Component::from_string("P 1 2000 2002-12-31"), Component::from_string("C 1 2000 2000-03-02"),
         Component::from_string("C 1 2000 1999-12-31"), Component::from_string("P 1 2000 1999-12-31"),
     };
@@ -2004,7 +2004,7 @@ TEST_F(CombinationsTest, Straddle_strip_jumps_leap_fail) {
         Component::from_string("C 1 2000 1999-12-31"), Component::from_string("P 1 2000 1999-12-31"),
         Component::from_string("C 1 2000 2000-01-02"), Component::from_string("P 1 2000 2000-01-31"),
         Component::from_string("C 1 2000 2000-03-02"), Component::from_string("P 1 2000 2000-03-01"),
-        Component::from_string("C 1 2000 2000-10-01"), Component::from_string("P 1 2000 2002-12-31"),
+        Component::from_string("C 1 2000 2000-09-01"), Component::from_string("P 1 2000 2002-12-31"),
     };
     std::vector<int> order;
     ASSERT_EQ("Options strip", combinations().classify(components, order));  // not "Straddle strip jumps"
